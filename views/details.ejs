@@ -1,0 +1,37 @@
+<html lang="en">
+<%- include("./partials/head.ejs") %>
+
+    <body>
+        <%- include("./partials/nav.ejs") %>
+
+            <div class="details content">
+                <h2>
+                    <%= blog.title %>
+                </h2>
+                <div class="content">
+                    <p>
+                        <%= blog.body %>
+                    </p>
+                </div>
+                <a class="delete" data-doc="<%= blog._id %>">delete</a>
+            </div>
+            <%- include("./partials/footer.ejs") %>
+
+                <script> //this is working on frontend not on server
+                    const trash = document.querySelector('a.delete');
+                    trash.addEventListener('click', (e) => { // now using fetch api
+                        const endpoint = `/blogs/${trash.dataset.doc}`; //saving the loc where we have to send req, using doc from data-doc
+                        //fetch
+                        fetch(endpoint, {
+                            method: `DELETE`
+                        })
+                            .then((result) => result.json())
+                            .then((resp) => window.location.href = resp.redirect)
+                            .catch(err => console.log(err));
+                    })
+                </script>
+    </body>
+
+</html>
+
+<!-- data doc to get id when we click dlt fetch us the id to be deleted -->
